@@ -50,6 +50,8 @@ namespace WorldService
             _cns.AddTargetSensor("HungSens", 0.0, 1000.0);
             _cns.AddSensor("FoodDistSens", 0.0, 1000.0);
             _cns.AddSensor("FoodAngleSens", 0.0, Math.PI);
+
+            _cns.UpdateSensors();
         }
 
         public List<Action> GetActions()

@@ -23,5 +23,10 @@ namespace CnsService
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateSensors()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
