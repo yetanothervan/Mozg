@@ -9,6 +9,6 @@ namespace Interfaces
     public interface ICreature
     {
         List<Action> GetActions();
-        void UpdateSensors();
+        void AdvantageMoment();
     }
 }

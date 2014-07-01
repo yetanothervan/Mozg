@@ -33,9 +33,9 @@ namespace WorldService
         {
             GetActions();
             CalculateStep();
-            UpdateSensors();
+            AdvantageMoment();
         }
-
+        
         private void GetActions()
         {
             foreach (var creature in _creatures)
@@ -74,10 +74,10 @@ namespace WorldService
             }
         }
 
-        private void UpdateSensors()
+        private void AdvantageMoment()
         {
             foreach (var creature in _creatures)
-                creature.Value.UpdateSensors();
+                creature.Value.AdvantageMoment();
         }
     }
 

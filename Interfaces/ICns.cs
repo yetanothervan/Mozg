@@ -12,5 +12,6 @@ namespace Interfaces
         void AddTargetSensor(string sensorName, double minValue, double maxValue);
         void AddEffector(string effectorName, double minValue, double maxValue);
         void UpdateSensors();
+        double GetEffector(string getFirstHorEffectorName);
     }
 }
