@@ -23,8 +23,13 @@ namespace CnsService
         {
             throw new NotImplementedException();
         }
+        
+        public double GetEffector(string getFirstHorEffectorName)
+        {
+            throw new NotImplementedException();
+        }
 
-        public void UpdateSensors()
+        public void AdvantageMoment()
         {
             throw new NotImplementedException();
         }

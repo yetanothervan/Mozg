@@ -18,11 +18,11 @@ namespace WorldService
         private const string RightBack = "RightBack";
 
         public const double ANGLE_MAX = 100.0;
-        public const double ANGLE_MIN = -100.0;
+        public const double ANGLE_MIN = 0 - ANGLE_MAX;
         public const double COM_MAX = 1000.0;
         public const double COM_MIN = 0.0;
         public const double EFF_MAX = 100.0;
-        public const double EFF_MIN = 0.0;
+        public const double EFF_MIN = 0 - EFF_MAX;
         public const double TOUCH_MAX = 1.0;
         public const double TOUCH_MIN = 0.0;
         public const double FOOD_ANGLE_MAX = Math.PI;
@@ -64,106 +64,90 @@ namespace WorldService
             _cns.AddTargetSensor("HungSens", COM_MIN, COM_MAX);
             _cns.AddSensor("FoodDistSens", COM_MIN, COM_MAX);
             _cns.AddSensor("FoodAngleSens", FOOD_ANGLE_MIN, FOOD_ANGLE_MAX);
+        }
 
-            _cns.UpdateSensors();
+        //for nonlinear tire level
+        public static double Normalize(double val, double minVal, double maxVal)
+        {
+            // =(-1600/(A101-125)-12,8)/51,2
+            double onePercent = (maxVal - minVal) / 100.0;
+            double percents = (val - minVal) / onePercent;
+            return (val - minVal) * (-1600.0 / (percents - 125.0) - 12.8) / 51.2 + minVal;
         }
 
         public List<Action> GetActions()
         {
-            ApplyEffsForLeg(LeftFront);
-            ApplyEffsForLeg(RightFront);
-            ApplyEffsForLeg(LeftBack);
-            ApplyEffsForLeg(RightBack);
-
-            _cns.AddSensor(leg.Value.GetTouchSensorName(), 0.0, 1.0);
-            _cns.AddEffector(leg.Value.GetFirstHorEffectorName(), 0.0, 100.0);
-            _cns.AddEffector(leg.Value.GetSecondHorEffectorName(), 0.0, 100.0);
-            _cns.AddEffector(leg.Value.GetFirstVerEffectorName(), 0.0, 100.0);
-            _cns.AddEffector(leg.Value.GetSecondVerEffectorName(), 0.0, 100.0);
+            var leftCom = ApplyEffsForLeg(LeftFront);
+            var rightCom = ApplyEffsForLeg(RightFront);
+            leftCom += ApplyEffsForLeg(LeftBack);
+            rightCom += ApplyEffsForLeg(RightBack);
             
-            return null;
+            //tire level calculate 
+            var tire = GetTired(LeftFront);
+            tire += GetTired(RightFront);
+            tire += GetTired(LeftBack);
+            tire += GetTired(RightBack);
+            
+            if (TireLevel - tire < 0) TireLevel = 0;
+            else TireLevel -= tire;
+            
+            var result = new List<Action>();
+            var angle = rightCom - leftCom;
+            if (Math.Abs(angle) > 0.01)
+            {
+                var rotate = new Action
+                {
+                    ActionType = ActionType.Rotate,
+                    Value = Math.PI/(Leg.EffPart*Bug.ANGLE_MAX*4)*angle
+                };
+                result.Add(rotate);
+            }
+
+            var dist = rightCom + leftCom;
+            if (Math.Abs(dist) > 0.01)
+            {
+                var move = new Action
+                {
+                    ActionType = ActionType.Move,
+                    Value = dist
+                };
+                result.Add(move);
+            }
+
+            return result;
         }
 
-        private void ApplyEffsForLeg(string leg)
+        private double GetTired(string legName)
+        {
+            var tire = 0.0;
+            tire += Normalize(Math.Abs(_cns.GetEffector(
+                _legs[legName].GetFirstHorEffectorName())), 0, EFF_MAX);
+            tire += Normalize(Math.Abs(_cns.GetEffector(
+                _legs[legName].GetSecondHorEffectorName())), 0, EFF_MAX);
+            tire += Normalize(Math.Abs(_cns.GetEffector(
+                _legs[legName].GetFirstVerEffectorName())), 0, EFF_MAX);
+            tire += Normalize(Math.Abs(_cns.GetEffector(
+                _legs[legName].GetSecondVerEffectorName())), 0, EFF_MAX);
+            return tire;
+        }
+
+        private double ApplyEffsForLeg(string leg)
         {
             var lf = _legs[leg];
             var lfHor = _cns.GetEffector(lf.GetFirstHorEffectorName());
             lfHor += _cns.GetEffector(lf.GetSecondHorEffectorName());
-            lf.ApplyHorEffector(lfHor);
-
+            var res = lf.ApplyHorEffector(lfHor);
+            
             var lfVer = _cns.GetEffector(lf.GetFirstVerEffectorName());
             lfVer += _cns.GetEffector(lf.GetSecondVerEffectorName());
             lf.ApplyVerEffector(lfVer);
+
+            return res;
         }
-
-        //РАСЧЕТ
-   /*   double leftComponent = Effs[(int)s0eff.l1].ValueModal + Effs[(int)s0eff.l2].ValueModal;
-      double rightComponent = Effs[(int)s0eff.r1].ValueModal + Effs[(int)s0eff.r2].ValueModal;
-      double upComponent = Effs[(int)s0eff.u1].ValueModal + Effs[(int)s0eff.u2].ValueModal;
-      double downComponent = Effs[(int)s0eff.d1].ValueModal + Effs[(int)s0eff.d2].ValueModal;
-
-      const double koeff = 0.005;
-      double curTire = Sens[(int)s0sens.tire].ValueModal / BoundValue.MaxValueModal;
-
-      double leftAdd = koeff * leftComponent * (0.9 * curTire + 0.1); //90% зависит от tire
-      double rightAdd = koeff * rightComponent * (0.9 * curTire + 0.1);
-      double upAdd = koeff * upComponent * (0.9 * curTire + 0.1);
-      double downAdd = koeff * downComponent * (0.9 * curTire + 0.1);
-
-      //min = 0 max = 1;
-      double newTire = (NormalizeModal(Effs[(int)s0eff.l1]) + NormalizeModal(Effs[(int)s0eff.l2]) +
-        NormalizeModal(Effs[(int)s0eff.r1]) + NormalizeModal(Effs[(int)s0eff.r2]) +
-        NormalizeModal(Effs[(int)s0eff.u1]) + NormalizeModal(Effs[(int)s0eff.u2]) +
-        NormalizeModal(Effs[(int)s0eff.d1]) + NormalizeModal(Effs[(int)s0eff.d2])) / 8;
-
-      newTire /= 1000;  //1000 моментов времени с максимальным напряжением
-
-      //ОБНОВЛЕНИЕ      
-      if (Sens[(int)s0sens.tire].ValueModal - newTire >= 0)
-        Sens[(int)s0sens.tire].ValueModal -= newTire;
-      else Sens[(int)s0sens.tire].ValueModal = 0;
-
-      if (leftAdd >= rightAdd)
-        UpdateSensor(leftAdd, rightAdd, ref Sens[(int)s0sens.l], ref Sens[(int)s0sens.r]);      
-      else
-        UpdateSensor(rightAdd, leftAdd, ref Sens[(int)s0sens.r], ref Sens[(int)s0sens.l]);
-
-      if (upAdd >= downAdd)
-        UpdateSensor(upAdd, downAdd, ref Sens[(int)s0sens.u], ref Sens[(int)s0sens.d]);
-      else
-        UpdateSensor(downAdd, upAdd, ref Sens[(int)s0sens.d], ref Sens[(int)s0sens.u]);
-
-      if (Sens[(int)s0sens.d].Value == BoundValue.MaxValue)
-        Sens[(int)s0sens.touch].Value = BoundValue.MaxValue;
-      else
-        Sens[(int)s0sens.touch].Value = BoundValue.MinValue;
-    }
-
-    void UpdateSensor(double a, double b, ref BoundValue sa, ref BoundValue sb)
-    {
-      a -= b;
-      if (a > 0)
-      {
-        if (sa.Value + a > BoundValue.MaxValue)
-          sa.Value = BoundValue.MaxValue;
-        else
-          sa.Value += a;
-        sb.ValueModal = BoundValue.MaxValueModal - sa.ValueModal;
-      }
-    }
-
-    public static double NormalizeModal(BoundValue val)
-    {
-      // =(-1600/(A101-125)-12,8)/51,2
-      const double onePercent = (BoundValue.MaxValue - BoundValue.MinValue)/100.0;
-      double percents = val.ValueModal / onePercent;
-      return val.ValueModal * (-1600.0 / (percents - 125.0) - 12.8) / 51.2;      
-    }
-  }*/
-
+        
         public void AdvantageMoment()
         {
-            throw new NotImplementedException();
+            _cns.AdvantageMoment();
         }
     }
 
@@ -175,17 +159,22 @@ namespace WorldService
         private double _verticalAngle;
 
         private const double TirePart = 0.9;
-        private const double EffPart = 0.1;
+        public const double EffPart = 0.1;
 
-        public void ApplyHorEffector(double eff)
+        public double ApplyHorEffector(double eff)
         {
             var tirePerc = _owner.TireLevel/(Bug.COM_MAX - Bug.COM_MIN);
             var result = eff * tirePerc * TirePart + eff * (1 - TirePart);
-
+            
             result *= EffPart;
+            var oldVal = _horizontalAngle;
             if (_horizontalAngle + result > Bug.ANGLE_MAX) _horizontalAngle = Bug.ANGLE_MAX;
             else if (_horizontalAngle + result < Bug.ANGLE_MIN) _horizontalAngle = Bug.ANGLE_MIN;
             else _horizontalAngle += result;
+
+            return Math.Abs(_verticalAngle - Bug.ANGLE_MAX) < 0.01 //if leg touchs earth
+                ? _horizontalAngle - oldVal
+                : 0.0;
         }
 
         public void ApplyVerEffector(double eff)
@@ -198,7 +187,7 @@ namespace WorldService
             else if (_verticalAngle + result < Bug.ANGLE_MIN) _verticalAngle = Bug.ANGLE_MIN;
             else _verticalAngle += result;
         }
-
+        
         public string GetHorizontalAngleSensorName()
         {
             return _name + "HorSens";

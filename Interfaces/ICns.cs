@@ -11,7 +11,7 @@ namespace Interfaces
         void AddSensor(string sensorName, double minValue, double maxValue);
         void AddTargetSensor(string sensorName, double minValue, double maxValue);
         void AddEffector(string effectorName, double minValue, double maxValue);
-        void UpdateSensors();
         double GetEffector(string getFirstHorEffectorName);
+        void AdvantageMoment();
     }
 }
