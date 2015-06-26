@@ -20,9 +20,10 @@ namespace OutputScreen
     /// </summary>
     public partial class RegionView : UserControl
     {
-        public RegionView()
+        public RegionView(RegionViewModel model)
         {
             InitializeComponent();
+            DataContext = model;
         }
     }
 }

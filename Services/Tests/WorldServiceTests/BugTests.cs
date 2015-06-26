@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Interfaces
+namespace WorldServiceTests
 {
-    public interface IWorldService
+    class BugTests
     {
-        void DoStep();
-        ICreature GetFirstCreature();
     }
 }

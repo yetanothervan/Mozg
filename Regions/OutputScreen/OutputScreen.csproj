@@ -70,7 +70,8 @@
     <Compile Include="RegionView.xaml.cs">
       <DependentUpon>RegionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RegionViewModule.cs" />
+    <Compile Include="RegionViewModel.cs" />
+    <Compile Include="SizeObserver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -69,7 +69,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bug.cs" />
+    <Compile Include="Bug\Bug.cs" />
+    <Compile Include="Bug\Leg.cs" />
+    <Compile Include="Bug\LegEffector.cs" />
+    <Compile Include="Bug\BugSensor.cs" />
     <Compile Include="ModuleDefinition\WorldServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorldService.cs" />

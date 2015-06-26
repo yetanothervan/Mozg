@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
@@ -9,29 +10,40 @@ namespace CnsService
 {
     public class Cns : ICns
     {
-        public void AddSensor(string sensorName, double minValue, double maxValue)
+        private readonly List<Sensor> _sensors;
+        private readonly List<Sensor> _targetSensors;
+        private readonly List<Effector> _effectors;
+
+        public Cns()
         {
-            throw new NotImplementedException();
+            _sensors = new List<Sensor>();
+            _targetSensors = new List<Sensor>();
+            _effectors = new List<Effector>();
         }
 
-        public void AddTargetSensor(string sensorName, double minValue, double maxValue)
+        public void AddSensor(ISensor s)
         {
-            throw new NotImplementedException();
+            _sensors.Add(new Sensor(s));
         }
 
-        public void AddEffector(string effectorName, double minValue, double maxValue)
+        public void AddTargetSensor(ISensor ts)
         {
-            throw new NotImplementedException();
+            _targetSensors.Add(new Sensor(ts));
         }
-        
-        public double GetEffector(string getFirstHorEffectorName)
+
+        public void AddEffector(IEffector e)
         {
-            throw new NotImplementedException();
+            _effectors.Add(new Effector(e));
+        }
+
+        public void SetEffectors()
+        {
+            
         }
 
         public void AdvantageMoment()
         {
-            throw new NotImplementedException();
+           //throw new NotImplementedException();
         }
     }
 }
