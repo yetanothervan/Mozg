@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:someToolbar="clr-namespace:SomeToolbar"
+             xmlns:comm="clr-namespace:Interfaces;assembly=Interfaces"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <WrapPanel d:DataContext="{d:DesignInstance someToolbar:RegionViewModel}">
-        <Button MinHeight="24" MinWidth="64" Command="{Binding DoStepCommand}">Шаг</Button>
+        <Button MinHeight="24" MinWidth="64" Command="{x:Static comm:ApplicationCommands.DoStepCommand}">Шаг</Button>
     </WrapPanel>
 </UserControl>

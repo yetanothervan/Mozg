@@ -21,7 +21,7 @@ namespace WorldService.Bug
         public const double ComMax = 1000.0;
         public const double ComMin = 0.0;
         public const double FoodAngleMax = Math.PI;
-        public const double FoodAngleMin = 0.0;
+        public const double FoodAngleMin = -Math.PI;
         
         private readonly ICns _cns;
         
@@ -81,6 +81,10 @@ namespace WorldService.Bug
 
         public List<Action> GetActions()
         {
+            UpdateSensorsFromWorld();
+            _cns.SetEffectors();
+            _cns.DoPrediction();
+
             foreach (var leg in _legs)
                 leg.Value.ApplyEffectors();
 
@@ -93,7 +97,7 @@ namespace WorldService.Bug
             
             var result = new List<Action>();
             var angle = rightCom - leftCom;
-            if (Math.Abs(angle) > 0.01)
+            if (Math.Abs(angle) > 0)
             {
                 var rotate = new Action
                 {
@@ -104,7 +108,7 @@ namespace WorldService.Bug
             }
 
             var dist = rightCom + leftCom;
-            if (Math.Abs(dist) > 0.01)
+            if (Math.Abs(dist) > 0)
             {
                 var move = new Action
                 {
@@ -136,6 +140,11 @@ namespace WorldService.Bug
 
         public void AdvantageMoment()
         {
+            _cns.AdvantageMoment();
+        }
+
+        private void UpdateSensorsFromWorld()
+        {
             if (_worldService.IsCreatureOnFood(Name))
             {
                 _worldService.EatFoodUnderMe(Name);
@@ -144,8 +153,6 @@ namespace WorldService.Bug
 
             _foodAngleSensor.Value = _worldService.GetNearestFoodAngle(Name);
             _foodDistSensor.Value = _worldService.GetNearestFoodDist(Name);
-
-            _cns.AdvantageMoment();
         }
 
         public ILeg GetFrontLeftLeg()

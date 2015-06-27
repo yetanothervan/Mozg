@@ -11,6 +11,7 @@ namespace WorldService.Bug
             MaxValue = maxValue;
             MinValue = minValue;
             Value = 0.0;
+            _tolerance = (MaxValue - MinValue)/Constants.ToleranceStep;
         }
 
         public string Name { get; private set; }
@@ -32,5 +33,11 @@ namespace WorldService.Bug
         public double MaxValue { get; private set; }
 
         public double MinValue { get; private set; }
+
+        private readonly double _tolerance;
+        public double Tolerance
+        {
+            get { return _tolerance; }
+        }
     }
 }

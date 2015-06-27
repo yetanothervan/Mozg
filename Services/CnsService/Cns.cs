@@ -38,12 +38,56 @@ namespace CnsService
 
         public void SetEffectors()
         {
-            
+            var poorPredictors = GetPoorPredictors();
+            if (poorPredictors != null && poorPredictors.Count > 0)
+            {
+                foreach (var predictor in poorPredictors)
+                    predictor.RefinePrediction();
+            }
+            else
+            {
+                var poorlyResearchedEffector = _effectors.FirstOrDefault(e => !e.IsResearchedWell());
+                if (poorlyResearchedEffector != null)
+                    DoResearchEffector(poorlyResearchedEffector);
+                else
+                    DoBestStrategy();
+            }
+        }
+
+        public void DoPrediction()
+        {
+            foreach (var sensor in _sensors)
+                sensor.DoPredict();
+
+            foreach (var sensor in _targetSensors)
+                sensor.DoPredict();
+        }
+
+        private void DoBestStrategy()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Effector _toResearchEffector;
+        private void DoResearchEffector(Effector effector)
+        {
+            _toResearchEffector = effector;
+            effector.DoResearch();
+        }
+
+        private List<Sensor> GetPoorPredictors()
+        {
+            var result = _sensors.Where(s => !s.IsPredictedWell()).ToList();
+            result.AddRange(_targetSensors.Where(s => !s.IsPredictedWell()));
+            return result;
         }
 
         public void AdvantageMoment()
         {
-           //throw new NotImplementedException();
+            if (_toResearchEffector != null)
+            {
+                _toResearchEffector.SetReseached(_toResearchEffector.PhysicalEffector.Value);
+            }
         }
     }
 }

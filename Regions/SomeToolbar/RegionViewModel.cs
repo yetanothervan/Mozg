@@ -14,28 +14,6 @@ namespace SomeToolbar
 {
     public class RegionViewModel : INotifyPropertyChanged
     {
-        public RegionViewModel()
-        {
-            DoStepCommand = new DelegateCommand(() => World.DoStep());
-        }
-        
-        public DelegateCommand DoStepCommand { get; set; }
-        
-        private IWorldService _world;
-        private IWorldService World
-        {
-            get
-            {
-                if (_world != null)
-                    return _world;
-
-                _world =
-                    (IWorldService)
-                        ServiceLocator.Current.GetService(typeof(IWorldService));
-                return _world;
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

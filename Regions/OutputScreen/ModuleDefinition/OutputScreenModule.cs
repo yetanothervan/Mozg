@@ -21,6 +21,7 @@ namespace OutputScreen.ModuleDefinition
         public void Initialize()
         {
             _regionViewRegistry.RegisterViewWithRegion(RegionNames.OutputScreenRegion, typeof(RegionView));
+            _regionViewRegistry.RegisterViewWithRegion(RegionNames.DiagnosticsRegion, typeof(DiagnosticsView.DiagnosticsView));
         }
     }
 }

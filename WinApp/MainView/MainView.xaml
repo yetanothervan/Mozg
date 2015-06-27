@@ -32,14 +32,20 @@
                     <layout:LayoutPanel Orientation="Vertical">
                     <layout:LayoutDocumentPaneGroup>
                         <layout:LayoutDocumentPane>
-                            
                             <layout:LayoutDocument Title="Output"
                                                    avalon:AvalonDockRegion.DocName ="{x:Static intr:RegionNames.OutputScreenRegion}">
                             </layout:LayoutDocument>
                         </layout:LayoutDocumentPane>
-                    </layout:LayoutDocumentPaneGroup>
+                     </layout:LayoutDocumentPaneGroup>
+                        <layout:LayoutDocumentPaneGroup>
+                            <layout:LayoutDocumentPane>
+                                <layout:LayoutDocument Title="Diagnostics"
+                                                   avalon:AvalonDockRegion.DocName ="{x:Static intr:RegionNames.DiagnosticsRegion}">
+                                </layout:LayoutDocument>
+                            </layout:LayoutDocumentPane>
+                        </layout:LayoutDocumentPaneGroup>
                     </layout:LayoutPanel>
-                    <layout:LayoutAnchorablePaneGroup DockWidth="150" Orientation="Vertical">
+                    <layout:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
                         <layout:LayoutAnchorablePane>
                             <layout:LayoutAnchorable Title="Tool 1" avalon:AvalonDockRegion.AnchorName="{x:Static intr:RegionNames.SomeToolbarRegion}">
                             </layout:LayoutAnchorable>

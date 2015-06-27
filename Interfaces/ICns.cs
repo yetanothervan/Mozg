@@ -12,6 +12,7 @@ namespace Interfaces
         void AddTargetSensor(ISensor ts);
         void AddEffector(IEffector e);
         void SetEffectors();
+        void DoPrediction();
         void AdvantageMoment();
     }
 }

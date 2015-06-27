@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Interfaces;
+using Microsoft.Practices.Prism.Commands;
 using Action = Interfaces.Action;
 
 namespace WorldService
@@ -13,7 +14,8 @@ namespace WorldService
         private readonly Dictionary<string, CreatureState> _creaturesStates;
         private readonly Dictionary<string, Action> _pendingActions;
         private readonly List<Food> _foodList;
-
+        private const double _worldDiscreate = 0.01;
+        private DelegateCommand DoStepCommand;
 
         public WorldService()
         {
@@ -30,6 +32,8 @@ namespace WorldService
             {
                 {TheBug, new CreatureState(50.0, 50.0, 0.0)}
             };
+            DoStepCommand = new DelegateCommand(DoStep);
+            ApplicationCommands.DoStepCommand.RegisterCommand(DoStepCommand);
         }
 
 
@@ -65,7 +69,7 @@ namespace WorldService
                     case ActionType.Rotate:
                     {
                         var state = _creaturesStates[pendingAction.Key];
-                        state.Angle += pendingAction.Value.Value;
+                        state.Angle += pendingAction.Value.Value; //TODO бред
                         _creaturesStates[pendingAction.Key] = state;
                     }
                         break;
@@ -93,16 +97,19 @@ namespace WorldService
         {
             CreatureState state;
             if (_creaturesStates.TryGetValue(name, out state))
-                return GetFoodOnCoords(state.X, state.Y) != null;
+            {
+                var food = GetFoodOnCoords(state.X, state.Y);
+                return food != null;
+            }
             return false;
         }
 
-        private Food? GetFoodOnCoords(double x, double y)
+        private Food GetFoodOnCoords(double x, double y)
         {
-            return _foodList.FirstOrDefault(food => food.X - x < 0.01 && food.Y - y < 0.01);
+            return _foodList.FirstOrDefault(food => food.X - x < _worldDiscreate && food.Y - y < _worldDiscreate);
         }
 
-        private Food? GetNearestFood(double x, double y)
+        private Food GetNearestFood(double x, double y)
         {
             var result =
                 _foodList.Select(food => new {food, Dist = GetDist(food.X, food.Y, x, y)})
@@ -124,7 +131,7 @@ namespace WorldService
             {
                 var food = GetFoodOnCoords(state.X, state.Y);
                 if (food != null)
-                    _foodList.Remove(food.Value);
+                    _foodList.Remove(food);
             }
         }
 
@@ -136,12 +143,12 @@ namespace WorldService
                 var food = GetNearestFood(state.X, state.Y);
                 if (food != null)
                 {
-                    double sin = (state.X - food.Value.X) / GetDist(state.X, state.Y, food.Value.X, food.Value.Y);
-                    double cos = (state.Y - food.Value.Y) / GetDist(state.X, state.Y, food.Value.X, food.Value.Y);
-                    double sin2 = state.Angle;
+                    double sin = (state.X - food.X)/GetDist(state.X, state.Y, food.X, food.Y);
+                    double cos = (state.Y - food.Y)/GetDist(state.X, state.Y, food.X, food.Y);
+                    double sin2 = state.Angle/Math.PI;
                     double cos2 = Math.Sqrt(1 - Math.Pow(sin2, 2));
 
-                    return sin*cos2 - cos*sin2;
+                    return (sin*cos2 - cos*sin2)*Math.PI;
                 }
             }
             return 0.0;
@@ -154,7 +161,7 @@ namespace WorldService
             {
                 var food = GetNearestFood(state.X, state.Y);
                 if (food != null)
-                    return GetDist(state.X, state.Y, food.Value.X, food.Value.Y);
+                    return GetDist(state.X, state.Y, food.X, food.Y);
             }
             return 10000;
         }
@@ -174,7 +181,7 @@ namespace WorldService
         }
     }
 
-    struct Food
+    class Food
     {
         public double X;
         public double Y;

@@ -6,5 +6,6 @@
         double Value { get; }
         double MaxValue { get; }
         double MinValue { get; }
+        double Tolerance { get; }
     }
 }

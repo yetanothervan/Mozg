@@ -13,17 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SomeToolbar
+namespace OutputScreen.DiagnosticsView
 {
     /// <summary>
-    /// Логика взаимодействия для RegionView.xaml
+    /// Interaction logic for DiagnosticsView.xaml
     /// </summary>
-    public partial class RegionView : UserControl
+    public partial class DiagnosticsView : UserControl
     {
-        public RegionView(RegionViewModel viewModel)
+        public DiagnosticsView(DiagnosticsViewModel model)
         {
             InitializeComponent();
-            DataContext = viewModel;
+            DataContext = model;
         }
     }
 }
