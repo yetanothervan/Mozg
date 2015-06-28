@@ -17,7 +17,7 @@ namespace WorldService
         private const double _worldDiscreate = 0.01;
         private DelegateCommand DoStepCommand;
 
-        public WorldService()
+        public WorldService(ICnsService cnsService)
         {
             _foodList = new List<Food>
             {
@@ -26,7 +26,7 @@ namespace WorldService
             _pendingActions = new Dictionary<string, Action>();
             _creatures = new Dictionary<string, ICreature>
             {
-                {TheBug, new Bug.Bug(TheBug, this)}
+                {TheBug, new Bug.Bug(TheBug, this, cnsService)}
             };
             _creaturesStates = new Dictionary<string, CreatureState>
             {
@@ -39,6 +39,18 @@ namespace WorldService
 
         public void DoStep()
         {
+            /*
+             * Получить внешние сенсоры
+             *  Запись в базу 
+             * Проверить прогноз
+             * Задать эффекторы
+             * Сделать прогноз
+             *  ++timeMoment
+             * Рассчитать внутренние сенсоры
+             * Рассчитать внешнее воздействие             
+             */
+
+
             GetActions();
             CalculateStep();
             AdvantageMoment();

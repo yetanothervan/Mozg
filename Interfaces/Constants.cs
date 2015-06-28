@@ -8,6 +8,6 @@ namespace Interfaces
 {
     public class Constants
     {
-        public const double ToleranceStep = 10000;
+        public const double UnitStep = 1000;
     }
 }

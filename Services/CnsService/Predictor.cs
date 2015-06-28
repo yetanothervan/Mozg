@@ -1,35 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Entities;
 using Interfaces;
 
 namespace CnsService
 {
     public class Predictor
     {
-        private readonly ISensor _sensorPhysical;
-        private List<SensorValueInterval> _intervals;
+        private readonly ICellMemory _cellMemory;
+        private readonly ICnsState _cnsState;
+        private readonly DbSensor _dbSensor;
+        private IForeteller _foreteller;
 
-        public Predictor(ISensor sensorPhysical)
+        public Predictor(DbSensor dbSensor, ICellMemory cellMemory, ICnsState cnsState)
         {
-            _sensorPhysical = sensorPhysical;
-            _intervals = new List<SensorValueInterval>();
-            var init = new SensorValueInterval() {Ceiling = double.PositiveInfinity, Floor = double.NegativeInfinity};
-            init.Foreteller = new ConstantForeteller(_sensorPhysical);
-            _intervals.Add(init);
+            _cellMemory = cellMemory;
+            _cnsState = cnsState;
+            _dbSensor = dbSensor;
+            _foreteller = new ConstantForeteller(_dbSensor, _cellMemory);
         }
 
         private double? _predictedValue;
         public void Predict()
         {
-            var interval = _intervals.First(i => i.Ceiling >= _sensorPhysical.Value && i.Floor < _sensorPhysical.Value);
-            _predictedValue = interval.Foreteller.Foretell();
+            _predictedValue = _foreteller.Foretell();
         }
 
         public bool IsPredictedWell()
         {
+            double curVal = _cellMemory.LastValue(_dbSensor);
+            
             if (_predictedValue == null) return false;
-            return Math.Abs(_predictedValue.Value - _sensorPhysical.Value) < _sensorPhysical.Tolerance;
+            return Math.Abs(_predictedValue.Value - curVal) < _dbSensor.Tolerance;
+        }
+
+        public void RefinePrediction()
+        {
+            if (_predictedValue == null) return;
+
+            //remove constant foreteller (it's a gag)
+            if (_foreteller is ConstantForeteller)
+                _foreteller = null;
+
+            if (_foreteller is SimilarForeteller)
+            {
+                var res = _foreteller.Improve();
+                if (res) return;
+            }
+
+            //magic foreteller
+            var effs = _cellMemory.GetEffectorsWithDifferentValuesLastTwoMoment();
+
+            if (effs.Count != 1)
+                throw new NotImplementedException();
+
+            _foreteller = new SimilarForeteller(_dbSensor, effs, _cellMemory, _cnsState);
         }
     }
 
@@ -38,23 +64,25 @@ namespace CnsService
         public IForeteller Foreteller { get; set; }
     }
 
-    public interface IForeteller
-    {
-        double Foretell();
-    }
-
     public class ConstantForeteller : IForeteller
     {
-        private readonly ISensor _sensorPhysical;
+        private readonly DbSensor _dbSensor;
+        private readonly ICellMemory _cellMemory;
 
-        public ConstantForeteller(ISensor sensorPhysical)
+        public ConstantForeteller(DbSensor dbSensor, ICellMemory cellMemory)
         {
-            _sensorPhysical = sensorPhysical;
+            _dbSensor = dbSensor;
+            _cellMemory = cellMemory;
         }
 
         public double Foretell()
         {
-            return _sensorPhysical.Value;
+            return _cellMemory.LastValue(_dbSensor);
+        }
+
+        public bool Improve()
+        {
+            return false;
         }
     }
 }

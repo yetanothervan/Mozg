@@ -1,16 +1,26 @@
-﻿using System.Runtime.Remoting.Messaging;
+﻿using System.Data.Entity;
+using System.Runtime.Remoting.Messaging;
+using Entities;
 using Interfaces;
 
 namespace CnsService
 {
     public  class Sensor
     {
-        private readonly ISensor _sensorPhysical;
+        public readonly ISensor SensorPhysical;
+        private readonly DbSensor _dbSensor;
+        private readonly ICellMemory _cellMemory;
+        private readonly ICnsState _cnsState;
 
-        public Sensor(ISensor sensorPhysical)
+        public Sensor(ISensor sensorPhysical, DbSensor dbSensor, ICellMemory cellMemory, ICnsState cnsState)
         {
-            _sensorPhysical = sensorPhysical;
+            SensorPhysical = sensorPhysical;
+            _dbSensor = dbSensor;
+            _cellMemory = cellMemory;
+            _cnsState = cnsState;
         }
+
+        public int DbSensorId { get { return _dbSensor.Id; } }
 
         public bool IsPredictedWell()
         {
@@ -23,11 +33,11 @@ namespace CnsService
         public void RefinePrediction()
         {
             if (_myPredictor == null)
-                _myPredictor = new Predictor(_sensorPhysical);
+                _myPredictor = new Predictor(_dbSensor, _cellMemory, _cnsState);
+            _myPredictor.RefinePrediction();
             //TODO focus
-
         }
-
+        
         public void AdvantageMoment()
         {
             

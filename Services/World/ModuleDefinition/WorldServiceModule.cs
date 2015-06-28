@@ -15,7 +15,7 @@ namespace WorldService.ModuleDefinition
 
         public void Initialize()
         {
-            _container.RegisterInstance(typeof(IWorldService), new WorldService());
+            _container.RegisterType<IWorldService, WorldService>(new ContainerControlledLifetimeManager());
         }
     }
 }

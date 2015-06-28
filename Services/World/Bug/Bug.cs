@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Interfaces;
-using Microsoft.Practices.ServiceLocation;
 using Action = Interfaces.Action;
 
 namespace WorldService.Bug
@@ -30,7 +29,7 @@ namespace WorldService.Bug
         private readonly BugSensor _foodDistSensor;
         private readonly BugSensor _foodAngleSensor;
         
-        public Bug(string name, WorldService worldService)
+        public Bug(string name, WorldService worldService, ICnsService cnsService)
         {
             _name = name;
             _worldService = worldService;
@@ -41,11 +40,7 @@ namespace WorldService.Bug
                 {LeftBack, new Leg(this, LeftBack)},
                 {RightBack, new Leg(this, RightBack)}
             };
-
-            var cnsService =
-                (ICnsService)
-                    ServiceLocator.Current.GetService(typeof(ICnsService));
-
+            
             _cns = cnsService.CreateCnc();
 
             foreach (var leg in _legs)

@@ -1,4 +1,6 @@
-﻿namespace Interfaces
+﻿using Entities;
+
+namespace Interfaces
 {
     public interface ISensor
     {
@@ -6,6 +8,5 @@
         double Value { get; }
         double MaxValue { get; }
         double MinValue { get; }
-        double Tolerance { get; }
     }
 }

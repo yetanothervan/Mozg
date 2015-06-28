@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Interfaces;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.ServiceLocation;
 using SomeToolbar.Annotations;
 
 namespace SomeToolbar

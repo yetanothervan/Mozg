@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using Entities;
 using Interfaces;
 
 namespace CnsService
@@ -8,11 +10,14 @@ namespace CnsService
     public class Effector
     {
         private readonly IEffector _effectorPhysical;
+        private readonly DbEffector _dbEffector;
         public IEffector PhysicalEffector { get { return _effectorPhysical; } }
+        public int DbEffectorId { get { return _dbEffector.Id; } }
 
-        public Effector(IEffector effector)
+        public Effector(IEffector effector, DbEffector dbEffector)
         {
             _effectorPhysical = effector;
+            _dbEffector = dbEffector;
         }
 
         private EffectorReseacher _effectorResacher;
@@ -56,7 +61,7 @@ namespace CnsService
             _intervals = new List<EffectorResearchInterval>();
 
             //research strategy
-            var unit = (_effectorPhysical.MaxValue - _effectorPhysical.MinValue)/Constants.ToleranceStep;
+            var unit = (_effectorPhysical.MaxValue - _effectorPhysical.MinValue)/Constants.UnitStep;
             int i = 0;
             while (true)
             {
