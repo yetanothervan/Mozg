@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Entities;
 
-namespace CnsService
+namespace Interfaces
 {
     public interface ICellMemory
     {
@@ -13,5 +9,7 @@ namespace CnsService
         List<double> GetEffectorValues(DbEffector eff, int depth);
         List<double> GetSensorValues(DbSensor sensor, int depth);
         double LastValue(DbSensor dbSensor);
+        List<DbEffector> GetEffectors();
+        IList<DbSensor> GetSensors();
     }
 }

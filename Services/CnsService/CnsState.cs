@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Interfaces;
 
 namespace CnsService
 {
@@ -27,11 +28,5 @@ namespace CnsService
         {
             get { return _effectorsNextValues; }
         }
-    }
-
-    public interface ICnsState
-    {
-        int TimeMoment { get; }
-        IReadOnlyDictionary<int, double> EffectorsNextValues { get; } 
     }
 }

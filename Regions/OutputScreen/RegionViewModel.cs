@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Interfaces;
+using Microsoft.Practices.Prism.Commands;
 using OutputScreen.Annotations;
 
 namespace OutputScreen
@@ -18,6 +19,7 @@ namespace OutputScreen
         private double _height;
         private Thickness _frontLeftMargin;
         private ILeg _leg;
+        private string _frontLeftHorAngle;
 
         public RegionViewModel(IWorldService worldService)
         {
@@ -29,15 +31,37 @@ namespace OutputScreen
             {
                 if (args.PropertyName == "Width" || args.PropertyName == "Height")
                 {
-                    if (_leg != null)
-                    {
-                        var horStep = Width/2/(_leg.MaxAngle - _leg.MinAngle);
-                        var verStep = Height/2/(_leg.MaxAngle - _leg.MinAngle);
-                        
-                        FrontLeftMargin = new Thickness(horStep * (_leg.HorAngle - _leg.MinAngle), verStep * (_leg.VerAngle - _leg.MinAngle) , 0, 0);
-                    }
+                    UpdateRegion();
                 }
             };
+
+            var doStepCommand = new DelegateCommand(UpdateRegion);
+            ApplicationCommands.DoStepCommand.RegisterCommand(doStepCommand);
+
+        }
+
+        private void UpdateRegion()
+        {
+            if (_leg != null)
+            {
+                var horStep = Width/2/(_leg.MaxAngle - _leg.MinAngle);
+                var verStep = Height/2/(_leg.MaxAngle - _leg.MinAngle);
+
+                FrontLeftMargin = new Thickness(horStep*(_leg.HorAngle - _leg.MinAngle), verStep*(_leg.VerAngle - _leg.MinAngle),
+                    0, 0);
+                FrontLeftHorAngle = _leg.HorAngle.ToString("F3");
+            }
+        }
+
+        public string FrontLeftHorAngle
+        {
+            get { return _frontLeftHorAngle; }
+            set
+            {
+                if (value == _frontLeftHorAngle) return;
+                _frontLeftHorAngle = value;
+                OnPropertyChanged();
+            }
         }
 
         public Thickness FrontLeftMargin

@@ -31,9 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Prism.Mvvm.1.0.0\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm">
+      <HintPath>..\references\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,8 +46,11 @@
     <Compile Include="Action.cs" />
     <Compile Include="ApplicationCommands.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ICellMemory.cs" />
     <Compile Include="ICns.cs" />
+    <Compile Include="ICnsDiagnostics.cs" />
     <Compile Include="ICnsService.cs" />
+    <Compile Include="ICnsState.cs" />
     <Compile Include="ICreature.cs" />
     <Compile Include="IEffector.cs" />
     <Compile Include="IFourLeg.cs" />

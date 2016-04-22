@@ -14,5 +14,6 @@ namespace Interfaces
         void SetEffectors();
         void DoPrediction();
         void AdvantageMoment();
+        ICnsDiagnostics CnsDiagnostics { get; }
     }
 }

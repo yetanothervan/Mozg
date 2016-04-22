@@ -12,7 +12,7 @@ using Interfaces;
 
 namespace CnsService
 {
-    public class Cns : ICns
+    public partial class Cns : ICns, ICnsDiagnostics
     {
         private readonly List<Sensor> _sensors;
         private readonly List<Sensor> _targetSensors;
@@ -84,9 +84,9 @@ namespace CnsService
 
         private void WriteValuesToDb()
         {
-            foreach (var sensor in _sensors) _cellMemory.AddSensorEntry(sensor);
-            foreach (var sensor in _targetSensors) _cellMemory.AddSensorEntry(sensor);
-            foreach (var effector in _effectors) _cellMemory.AddEffectorEntry(effector);
+            _cellMemory.AddSensorEntry(_sensors);
+            _cellMemory.AddSensorEntry(_targetSensors);
+            _cellMemory.AddEffectorEntry(_effectors);
         }
 
         public void DoPrediction()

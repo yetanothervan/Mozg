@@ -14,6 +14,6 @@ namespace Entities
         public int DbEffectorId { get; set; }
         public int TimeMoment { get; set; }
         public double Value { get; set; }
-        public virtual DbEffector DbEffector { get; set; }
+        //public virtual DbEffector DbEffector { get; set; }
     }
 }

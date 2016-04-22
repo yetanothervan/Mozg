@@ -21,6 +21,7 @@
         <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Blue">
             <Border Margin="{Binding FrontLeftMargin}" BorderThickness="5" BorderBrush="Black" Width="5" Height="5" HorizontalAlignment="Left" VerticalAlignment="Top"></Border>
         </Border>
+        <TextBlock Grid.Column ="0" Grid.Row="0" Margin="10" Text="{Binding FrontLeftHorAngle}"/>
         <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Blue">
             
         </Border>

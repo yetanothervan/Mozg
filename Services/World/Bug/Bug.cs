@@ -17,7 +17,7 @@ namespace WorldService.Bug
         private const string RightBack = "RightBack";
 
        
-        public const double ComMax = 1000.0;
+        public const double ComMax = 1000000.0;
         public const double ComMin = 0.0;
         public const double FoodAngleMax = Math.PI;
         public const double FoodAngleMin = -Math.PI;
@@ -136,6 +136,11 @@ namespace WorldService.Bug
         public void AdvantageMoment()
         {
             _cns.AdvantageMoment();
+        }
+
+        public ICnsDiagnostics CnsDiagnostics
+        {
+            get { return _cns.CnsDiagnostics; }
         }
 
         private void UpdateSensorsFromWorld()

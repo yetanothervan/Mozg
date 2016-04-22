@@ -50,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CnsContext.cs" />
+    <Compile Include="FakeCnsContext.cs" />
+    <Compile Include="FakeDbSet.cs" />
+    <Compile Include="ICnsContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

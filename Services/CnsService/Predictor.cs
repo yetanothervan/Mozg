@@ -52,10 +52,15 @@ namespace CnsService
             //magic foreteller
             var effs = _cellMemory.GetEffectorsWithDifferentValuesLastTwoMoment();
 
-            if (effs.Count != 1)
+            if (effs.Count != 1) //эффекторов с различными значениями больше чем один, такое пока не прогнозируем
                 throw new NotImplementedException();
 
             _foreteller = new SimilarForeteller(_dbSensor, effs, _cellMemory, _cnsState);
+        }
+
+        public double? GetPredictedValue()
+        {
+            return _predictedValue;
         }
     }
 

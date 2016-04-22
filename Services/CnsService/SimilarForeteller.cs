@@ -57,7 +57,7 @@ namespace CnsService
                 if (Math.Abs(e) < _affectors[0].Tolerance) continue;
 
                 //Snext = aS + bE  =>  b = (Snext - aS) / E
-                if (bFound && Math.Abs(_b - (Snext - S) / e) < _affectors[0].Tolerance) throw new NotImplementedException(); //b differs
+                if (bFound && Math.Abs(_b - (Snext - S) / e) > _affectors[0].Tolerance) throw new NotImplementedException(); //b differs
 
                 _b = (Snext - S) / e;
                 bFound = true;
@@ -80,7 +80,7 @@ namespace CnsService
 
                 if (Math.Abs(e) < _affectors[0].Tolerance) continue;
 
-                if (bFound && Math.Abs(_b - (snext/e)) < _affectors[0].Tolerance) return false; //b differs
+                if (bFound && Math.Abs(_b - (snext/e)) > _affectors[0].Tolerance) return false; //b differs
 
                 _b = snext/e;
                 bFound = true;

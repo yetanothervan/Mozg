@@ -47,5 +47,11 @@ namespace CnsService
         {
             _myPredictor.Predict();
         }
+
+        public double? GetPredictedValue()
+        {
+            if (_myPredictor == null) return null;
+            return _myPredictor.GetPredictedValue();
+        }
     }
 }
