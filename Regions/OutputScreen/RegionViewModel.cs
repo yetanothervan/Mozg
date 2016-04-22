@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Interfaces;
-using Microsoft.Practices.Prism.Commands;
 using OutputScreen.Annotations;
+using Prism.Commands;
 
 namespace OutputScreen
 {

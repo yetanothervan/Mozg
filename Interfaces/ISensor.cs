@@ -1,6 +1,4 @@
-﻿using Entities;
-
-namespace Interfaces
+﻿namespace Interfaces
 {
     public interface ISensor
     {

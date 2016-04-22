@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Entities;
-
-namespace Interfaces
+﻿namespace Interfaces
 {
     public interface ICnsDiagnostics
     {

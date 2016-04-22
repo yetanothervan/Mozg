@@ -1,6 +1,4 @@
-﻿using System.Data.Entity;
-using System.Runtime.Remoting.Messaging;
-using Entities;
+﻿using Entities;
 using Interfaces;
 
 namespace CnsService

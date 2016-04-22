@@ -4,8 +4,8 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Prism.Regions.Behaviors;
+using Prism.Regions;
+using Prism.Regions.Behaviors;
 using Xceed.Wpf.AvalonDock;
 
 namespace WinApp.Avalon

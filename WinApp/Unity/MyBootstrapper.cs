@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using CnsService.ModuleDefinition;
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using OutputScreen.ModuleDefinition;
+using Prism.Modularity;
+using Prism.Regions;
+using Prism.Unity;
 using SomeToolbar.ModuleDefinition;
 using WinApp.Avalon;
 using WorldService.ModuleDefinition;

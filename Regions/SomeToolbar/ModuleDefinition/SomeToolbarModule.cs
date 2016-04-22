@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Interfaces;
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.Regions;
+﻿using Interfaces;
+using Prism.Modularity;
+using Prism.Regions;
 
 namespace SomeToolbar.ModuleDefinition
 {

@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Interfaces;
-using Microsoft.Practices.Prism.Commands;
 using OutputScreen.Annotations;
+using Prism.Commands;
 
 namespace OutputScreen.DiagnosticsView
 {

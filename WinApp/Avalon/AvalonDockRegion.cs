@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
-using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Prism.Regions.Behaviors;
 using Microsoft.Practices.ServiceLocation;
+using Prism.Regions;
+using Prism.Regions.Behaviors;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WinApp.Avalon

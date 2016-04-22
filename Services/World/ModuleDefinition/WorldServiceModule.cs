@@ -1,6 +1,6 @@
 ﻿using Interfaces;
-using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
+using Prism.Modularity;
 
 namespace WorldService.ModuleDefinition
 {

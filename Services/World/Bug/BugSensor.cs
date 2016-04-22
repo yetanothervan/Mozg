@@ -1,4 +1,3 @@
-using System.Dynamic;
 using Interfaces;
 
 namespace WorldService.Bug

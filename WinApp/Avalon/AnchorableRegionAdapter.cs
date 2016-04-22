@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
-using Microsoft.Practices.Prism.Regions;
+using Prism.Regions;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WinApp.Avalon
