@@ -7,6 +7,5 @@
         void AddEffector(IEffector e);
         void SetEffectors();
         void AdvantageMoment();
-        ICnsDiagnostics CnsDiagnostics { get; }
     }
 }

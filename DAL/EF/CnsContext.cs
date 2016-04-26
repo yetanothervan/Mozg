@@ -14,7 +14,6 @@ namespace EF
         }
         public DbSet<DbSensor> DbSensors { get; set; }
         public DbSet<DbEffector> DbEffectors { get; set; }
-        public DbSet<SensorEntry> SensorEntries { get; set; }
-        public DbSet<EffectorEntry> EffectorEntries { get; set; }
+        public DbSet<CellEntry> CellEntries { get; set; }
     }
 }

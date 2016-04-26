@@ -7,8 +7,7 @@ namespace EF
     {
         DbSet<DbSensor> DbSensors { get; set; }
         DbSet<DbEffector> DbEffectors { get; set; }
-        DbSet<SensorEntry> SensorEntries { get; set; }
-        DbSet<EffectorEntry> EffectorEntries { get; set; }
+        DbSet<CellEntry> CellEntries { get; set; }
         int SaveChanges();
 
     }

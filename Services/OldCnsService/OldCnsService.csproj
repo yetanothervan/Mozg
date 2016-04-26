@@ -95,7 +95,6 @@
     <Compile Include="CellMemory.cs" />
     <Compile Include="Cns.cs" />
     <Compile Include="CnsDiagnostics.cs" />
-    <Compile Include="CnsService.cs" />
     <Compile Include="CnsState.cs" />
     <Compile Include="Foretellers\ConstantForeteller.cs" />
     <Compile Include="Effector.cs" />

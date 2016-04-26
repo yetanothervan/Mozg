@@ -21,7 +21,7 @@ namespace CnsService
 
         public void AddSensorEntry(IEnumerable<Sensor> sensors)
         {
-            _context.SensorEntries.AddRange(sensors.Select(s => new SensorEntry()
+            _context.SensorEntries.AddRange(sensors.Select(s => new CellEntry()
             {
                 DbSensorId = s.DbSensorId,
                 TimeMoment = _cnsState.TimeMoment,

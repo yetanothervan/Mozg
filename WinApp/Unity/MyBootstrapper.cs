@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using CnsService.ModuleDefinition;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
