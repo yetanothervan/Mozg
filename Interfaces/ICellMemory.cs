@@ -11,5 +11,6 @@ namespace Interfaces
         double LastValue(DbSensor dbSensor);
         List<DbEffector> GetEffectors();
         IList<DbSensor> GetSensors();
+        int LastSavedMoment { get; set; }
     }
 }

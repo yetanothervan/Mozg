@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Entities;
 using Interfaces;
 
-namespace CnsService
+namespace CnsService.Foretellers
 {
     public class SimilarForeteller : IForeteller
     {
@@ -93,10 +93,9 @@ namespace CnsService
             return _a*_cellMemory.LastValue(_mySensor) + _b*_cnsState.EffectorsNextValues[_affectors[0].Id];
         }
 
-        public bool Improve()
+        public void Improve()
         {
             Init();
-            return true;
         }
     }
 }

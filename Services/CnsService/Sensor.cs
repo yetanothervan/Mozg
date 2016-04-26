@@ -1,9 +1,10 @@
-﻿using Entities;
+﻿using CnsService.Foretellers;
+using Entities;
 using Interfaces;
 
 namespace CnsService
 {
-    public  class Sensor
+    public  class Sensor : Cell
     {
         public readonly ISensor SensorPhysical;
         private readonly DbSensor _dbSensor;
@@ -16,6 +17,7 @@ namespace CnsService
             _dbSensor = dbSensor;
             _cellMemory = cellMemory;
             _cnsState = cnsState;
+            _myPredictor = new Predictor(sensorPhysical.Value, _dbSensor, _cellMemory, _cnsState);
         }
 
         public int DbSensorId { get { return _dbSensor.Id; } }
@@ -31,7 +33,7 @@ namespace CnsService
         public void RefinePrediction()
         {
             if (_myPredictor == null)
-                _myPredictor = new Predictor(_dbSensor, _cellMemory, _cnsState);
+                _myPredictor = new Predictor(SensorPhysical.Value, _dbSensor, _cellMemory, _cnsState);
             _myPredictor.RefinePrediction();
             //TODO focus
         }

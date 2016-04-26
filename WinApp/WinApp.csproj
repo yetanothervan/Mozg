@@ -185,9 +185,9 @@
       <Project>{F161B403-DC21-4008-B9F1-5653985AC802}</Project>
       <Name>SomeToolbar</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services\CnsService\CnsService.csproj">
+    <ProjectReference Include="..\Services\CnsService\OldCnsService.csproj">
       <Project>{4de58512-02d8-41e9-be66-fdf3b274bdc3}</Project>
-      <Name>CnsService</Name>
+      <Name>OldCnsService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Services\World\WorldService.csproj">
       <Project>{BFDAE637-D564-425E-93A0-30BC54D9A9BF}</Project>

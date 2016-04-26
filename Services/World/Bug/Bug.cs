@@ -78,7 +78,6 @@ namespace WorldService.Bug
         {
             UpdateSensorsFromWorld();
             _cns.SetEffectors();
-            _cns.DoPrediction();
 
             foreach (var leg in _legs)
                 leg.Value.ApplyEffectors();

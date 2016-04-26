@@ -20,7 +20,7 @@ namespace CnsService
             _targetSensors = new List<Sensor>();
             _effectors = new List<Effector>();
             _timeMoment = 0;
-            _state = new CnsState(this, new Dictionary<int, double>());
+            _state = new CnsState(this, _cellMemory, new Dictionary<int, double>());
             _cellMemory = new CellMemory(_state);
         }
 

@@ -3,6 +3,6 @@
     public interface IForeteller
     {
         double Foretell();
-        bool Improve();
+        void Improve();
     }
 }

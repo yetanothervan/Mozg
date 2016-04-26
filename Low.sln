@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C942ECC-1DA6-4C9D-90B9-B1BBE0908E5D}"
 	ProjectSection(SolutionItems) = preProject
 		Description.txt = Description.txt
@@ -26,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{64
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldService", "Services\World\WorldService.csproj", "{BFDAE637-D564-425E-93A0-30BC54D9A9BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnsService", "Services\CnsService\CnsService.csproj", "{4DE58512-02D8-41E9-BE66-FDF3B274BDC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldCnsService", "Services\CnsService\OldCnsService.csproj", "{4DE58512-02D8-41E9-BE66-FDF3B274BDC3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{710D8493-51C3-4839-8EF5-237D5C9DEDDB}"
 EndProject

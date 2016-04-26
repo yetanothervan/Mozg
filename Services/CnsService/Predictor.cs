@@ -1,4 +1,5 @@
 ﻿using System;
+using CnsService.Foretellers;
 using Entities;
 using Interfaces;
 
@@ -11,12 +12,12 @@ namespace CnsService
         private readonly DbSensor _dbSensor;
         private IForeteller _foreteller;
 
-        public Predictor(DbSensor dbSensor, ICellMemory cellMemory, ICnsState cnsState)
+        public Predictor(double val, DbSensor dbSensor, ICellMemory cellMemory, ICnsState cnsState)
         {
             _cellMemory = cellMemory;
             _cnsState = cnsState;
             _dbSensor = dbSensor;
-            _foreteller = new ConstantForeteller(_dbSensor, _cellMemory);
+            _foreteller = new ConstantForeteller(val);
         }
 
         private double? _predictedValue;
@@ -41,11 +42,7 @@ namespace CnsService
             if (_foreteller is ConstantForeteller)
                 _foreteller = null;
 
-            if (_foreteller is SimilarForeteller)
-            {
-                var res = _foreteller.Improve();
-                if (res) return;
-            }
+            return;
 
             //magic foreteller
             var effs = _cellMemory.GetEffectorsWithDifferentValuesLastTwoMoment();
@@ -65,27 +62,5 @@ namespace CnsService
     public class SensorValueInterval : ValueInterval
     {
         public IForeteller Foreteller { get; set; }
-    }
-
-    public class ConstantForeteller : IForeteller
-    {
-        private readonly DbSensor _dbSensor;
-        private readonly ICellMemory _cellMemory;
-
-        public ConstantForeteller(DbSensor dbSensor, ICellMemory cellMemory)
-        {
-            _dbSensor = dbSensor;
-            _cellMemory = cellMemory;
-        }
-
-        public double Foretell()
-        {
-            return _cellMemory.LastValue(_dbSensor);
-        }
-
-        public bool Improve()
-        {
-            return false;
-        }
     }
 }

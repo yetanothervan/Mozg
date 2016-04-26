@@ -89,6 +89,8 @@ namespace CnsService
             return _context.DbSensors.ToList();
         }
 
+        public int LastSavedMoment { get; set; }
+
         private int _sensorId;
         public DbSensor AddSensor(ISensor s)
         {
