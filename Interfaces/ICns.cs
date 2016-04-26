@@ -5,7 +5,7 @@
         void AddSensor(ISensor s);
         void AddTargetSensor(ISensor ts);
         void AddEffector(IEffector e);
-        void SetEffectors();
+        void Act();
         void AdvantageMoment();
     }
 }

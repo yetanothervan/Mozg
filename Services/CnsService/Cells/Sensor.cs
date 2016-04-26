@@ -13,7 +13,7 @@ namespace CnsService.Cells
         private readonly double _maxValue;
         private readonly double _minValue;
         private readonly int _id;
-        private ISensor _physical;
+        private readonly ISensor _physical;
 
         public Sensor(ISensor sensor, int id)
         {

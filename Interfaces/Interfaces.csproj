@@ -47,9 +47,7 @@
     <Compile Include="Action.cs" />
     <Compile Include="ApplicationCommands.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="ICellMemory.cs" />
     <Compile Include="ICns.cs" />
-    <Compile Include="ICnsDiagnostics.cs" />
     <Compile Include="ICnsService.cs" />
     <Compile Include="ICnsState.cs" />
     <Compile Include="ICreature.cs" />

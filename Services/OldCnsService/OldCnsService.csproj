@@ -91,19 +91,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
     <Compile Include="CellMemory.cs" />
-    <Compile Include="Cns.cs" />
-    <Compile Include="CnsDiagnostics.cs" />
-    <Compile Include="CnsState.cs" />
-    <Compile Include="Foretellers\ConstantForeteller.cs" />
     <Compile Include="Effector.cs" />
-    <Compile Include="IForeteller.cs" />
-    <Compile Include="ModuleDefinition\CnsServiceModule.cs" />
-    <Compile Include="Predictor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sensor.cs" />
-    <Compile Include="Foretellers\SimilarForeteller.cs" />
     <Compile Include="ValueInterval.cs" />
   </ItemGroup>
   <ItemGroup>

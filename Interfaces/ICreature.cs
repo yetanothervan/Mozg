@@ -6,6 +6,5 @@ namespace Interfaces
     {
         List<Action> GetActions();
         void AdvantageMoment();
-        ICnsDiagnostics CnsDiagnostics { get; }
     }
 }

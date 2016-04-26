@@ -6,7 +6,7 @@ using Interfaces;
 
 namespace CnsService
 {
-    public class Effector : Cell
+    public class Effector 
     {
         private readonly IEffector _effectorPhysical;
         private readonly DbEffector _dbEffector;

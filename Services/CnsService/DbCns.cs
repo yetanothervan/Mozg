@@ -8,6 +8,7 @@ using CnsService.Cells;
 using EF;
 using Entities;
 using Interfaces;
+using Prism.Regions;
 
 namespace CnsService
 {
@@ -92,7 +93,39 @@ namespace CnsService
 
         private int GetNewId()
         {
-            return 1 + Math.Max(_context.DbEffectors.Max(i => i.Id), _context.DbSensors.Max(i => i.Id));
+            if (!_context.DbEffectors.Any() && !_context.DbSensors.Any())
+                return 1;
+
+            if (_context.DbEffectors.Any() && _context.DbSensors.Any())
+                return 1 + Math.Max(_context.DbEffectors.Max(i => i.Id), _context.DbSensors.Max(i => i.Id));
+
+            if (!_context.DbSensors.Any())
+                return 1 + _context.DbEffectors.Max(i => i.Id);
+
+            return 1 + _context.DbSensors.Max(i => i.Id);
+        }
+
+        public List<Sensor> GetPoorPredictors()
+        {
+            var result = new List<Sensor>();
+            if (_timeMomentSaved == -1)
+            {
+                result.AddRange(_sensors);
+                result.AddRange(_targetSensors);
+                return result;
+            }
+
+            return result;
+        }
+
+        public void RefinePrediction(List<Sensor> sensors)
+        {
+            if (_timeMomentSaved == -1) return;
+        }
+        
+        public List<Effector> GetEffectors()
+        {
+            return _effectors;
         }
     }
 }

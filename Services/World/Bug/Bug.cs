@@ -77,7 +77,7 @@ namespace WorldService.Bug
         public List<Action> GetActions()
         {
             UpdateSensorsFromWorld();
-            _cns.SetEffectors();
+            _cns.Act();
 
             foreach (var leg in _legs)
                 leg.Value.ApplyEffectors();
@@ -135,11 +135,6 @@ namespace WorldService.Bug
         public void AdvantageMoment()
         {
             _cns.AdvantageMoment();
-        }
-
-        public ICnsDiagnostics CnsDiagnostics
-        {
-            get { return _cns.CnsDiagnostics; }
         }
 
         private void UpdateSensorsFromWorld()

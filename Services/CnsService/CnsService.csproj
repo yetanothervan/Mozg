@@ -71,6 +71,9 @@
     <Compile Include="Cns.cs" />
     <Compile Include="CnsService.cs" />
     <Compile Include="DbCns.cs" />
+    <Compile Include="EffReasearch\EffectorsResearcher.cs" />
+    <Compile Include="EffReasearch\EffectorTest.cs" />
+    <Compile Include="EffReasearch\ValueInterval.cs" />
     <Compile Include="ModuleDefinition\CnsServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,6 +94,9 @@
       <Project>{CFAADABA-87A5-45C4-8FE5-4C48956314FC}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Predict\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

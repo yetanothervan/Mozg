@@ -7,13 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid d:DataContext="{d:DesignInstance diagnosticsView:DiagnosticsViewModel}">
-            <StackPanel>
-                <TextBlock Text="{Binding EffectorNext}" />
-            <TextBlock Text="{Binding EffectorCurrent}" />
-            <TextBlock Text="{Binding EffectorPrevious}" />
-            <TextBlock Text="{Binding SensorPredicted}" />
-            <TextBlock Text="{Binding SensorCurrent}" />
-            <TextBlock Text="{Binding SensorPrevious}" />
+        <StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>
