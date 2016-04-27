@@ -189,10 +189,6 @@
       <Project>{E55F856F-CD18-4190-B05A-F333BF58061C}</Project>
       <Name>CnsService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services\OldCnsService\OldCnsService.csproj">
-      <Project>{4DE58512-02D8-41E9-BE66-FDF3B274BDC3}</Project>
-      <Name>OldCnsService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Services\World\WorldService.csproj">
       <Project>{BFDAE637-D564-425E-93A0-30BC54D9A9BF}</Project>
       <Name>WorldService</Name>

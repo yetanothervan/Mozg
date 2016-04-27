@@ -26,9 +26,29 @@ namespace CnsService.Cells
 
         public int DbId { get { return _id; } }
 
+        public double MaxValue
+        {
+            get { return _maxValue; }
+        }
+
+        public double MinValue
+        {
+            get { return _minValue; }
+        }
+
+        public string Name
+        {
+            get { return _name; }
+        }
+
         public double GetValue()
         {
             return _physical.Value;
+        }
+
+        public void SetNextValue(double value)
+        {
+            _physical.NextValue = value;
         }
     }
 }

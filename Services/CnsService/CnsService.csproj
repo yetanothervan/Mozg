@@ -66,16 +66,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cells\Cell.cs" />
+    <Compile Include="IDbCnsOut.cs" />
+    <Compile Include="Predictors\PredictedValue.cs" />
+    <Compile Include="Predictors\ConstantPredictor.cs" />
     <Compile Include="Cells\Effector.cs" />
+    <Compile Include="Predictors\IPredictor.cs" />
     <Compile Include="Cells\Sensor.cs" />
     <Compile Include="Cns.cs" />
     <Compile Include="CnsService.cs" />
     <Compile Include="DbCns.cs" />
     <Compile Include="EffReasearch\EffectorsResearcher.cs" />
     <Compile Include="EffReasearch\EffectorTest.cs" />
-    <Compile Include="EffReasearch\ValueInterval.cs" />
+    <Compile Include="EffReasearch\ResearchInterval.cs" />
     <Compile Include="ModuleDefinition\CnsServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -95,9 +100,7 @@
       <Name>Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Predict\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

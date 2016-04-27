@@ -5,7 +5,7 @@ using Interfaces;
 
 namespace CnsService
 {
-    public class Cns : ICns
+    public class Cns : ICns, ICnsState
     {
         private int _timeMoment;
         private readonly DbCns _dbCns;
@@ -14,7 +14,7 @@ namespace CnsService
         public Cns()
         {
             _timeMoment = 0;
-            _dbCns = new DbCns();
+            _dbCns = new DbCns(this);
             _researcher = new EffectorsResearcher(_dbCns);
         }
 
@@ -36,19 +36,21 @@ namespace CnsService
         public void Act()
         {
             //попытаться улучшить плохие предикторы
-            var poorPredictors = _dbCns.GetPoorPredictors();
-            if (poorPredictors != null && poorPredictors.Count > 0)
-                _dbCns.RefinePrediction(poorPredictors);
+            if (!_dbCns.IsPredictedWell())
+                _dbCns.RefinePrediction();
 
             //если иха нет - исследовать неисследованные эффекторы
             else
             {
+                _researcher.PredictedWell();
                 if (_researcher.AreThereIssues())
                     _researcher.DoResearch();
                 else
                 //если и иха нет - делать лучший ход
                     DoBestStrategy();
             }
+
+            _dbCns.DoPrediction();
         }
 
         public void AdvantageMoment()
@@ -57,6 +59,8 @@ namespace CnsService
             _dbCns.MemorizeValues(_timeMoment);
             ++_timeMoment;
         }
+
+        public int TimeMoment { get { return _timeMoment; } }
         
         private void DoBestStrategy()
         {

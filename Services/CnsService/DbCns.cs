@@ -12,16 +12,18 @@ using Prism.Regions;
 
 namespace CnsService
 {
-    public class DbCns
+    public class DbCns : IDbCnsOut
     {
+        private readonly ICnsState _cnsState;
         private readonly List<Sensor> _sensors;
         private readonly List<Sensor> _targetSensors;
         private readonly List<Effector> _effectors;
         private readonly ICnsContext _context;
         private int _timeMomentSaved;
         
-        public DbCns()
+        public DbCns(ICnsState cnsState)
         {
+            _cnsState = cnsState;
             _sensors = new List<Sensor>();
             _targetSensors = new List<Sensor>();
             _effectors = new List<Effector>();
@@ -63,7 +65,7 @@ namespace CnsService
                 Name = s.Name,
                 Tolerance = (s.MaxValue - s.MinValue)/(Constants.UnitStep*100)
             });
-            _sensors.Add(new Sensor(s, dbs.Id));
+            _sensors.Add(new Sensor(s, dbs.Id, this, dbs.Tolerance));
             _context.SaveChanges();
         }
 
@@ -75,7 +77,7 @@ namespace CnsService
                 Name = ts.Name,
                 Tolerance = (ts.MaxValue - ts.MinValue)/(Constants.UnitStep*100)
             });
-            _targetSensors.Add(new Sensor(ts, dbs.Id));
+            _targetSensors.Add(new Sensor(ts, dbs.Id, this, dbs.Tolerance));
             _context.SaveChanges();
         }
 
@@ -104,8 +106,48 @@ namespace CnsService
 
             return 1 + _context.DbSensors.Max(i => i.Id);
         }
+        
+        public void RefinePrediction()
+        {
+            if (_timeMomentSaved == -1) return;
 
-        public List<Sensor> GetPoorPredictors()
+            var badPredictors = GetPoorPredictors();
+            foreach (var bp in badPredictors)
+            {
+                //todo - here
+            }
+        }
+        
+        public List<Effector> GetEffectors()
+        {
+            return _effectors;
+        }
+
+        public void SetEffector(int id, double value)
+        {
+            _effectors.First(e => e.DbId == id).SetNextValue(value);
+        }
+
+        public bool IsPredictedWell()
+        {
+            var poorPredictors = GetPoorPredictors();
+            return poorPredictors == null || poorPredictors.Count == 0;
+        }
+
+        public void DoPrediction()
+        {
+            foreach (var s in _sensors) 
+                s.DoPrediction();
+            foreach (var ts in _targetSensors)
+                ts.DoPrediction();
+        }
+
+        public int CurrentTimeMoment
+        {
+            get { return _cnsState.TimeMoment; }
+        }
+
+        private List<Sensor> GetPoorPredictors()
         {
             var result = new List<Sensor>();
             if (_timeMomentSaved == -1)
@@ -115,17 +157,9 @@ namespace CnsService
                 return result;
             }
 
+            result.AddRange(_sensors.Where(s => !s.PredictedWell()));
+            result.AddRange(_targetSensors.Where(s=>!s.PredictedWell()));
             return result;
-        }
-
-        public void RefinePrediction(List<Sensor> sensors)
-        {
-            if (_timeMomentSaved == -1) return;
-        }
-        
-        public List<Effector> GetEffectors()
-        {
-            return _effectors;
         }
     }
 }
