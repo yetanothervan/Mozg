@@ -23,7 +23,7 @@ namespace CnsService.EffReasearch
             if (_dbCns.GetEffectors().Count > _effTests.Count)
                 ArrangeResearches();
 
-            if (_currentTest != null && !_currentTest.ResearchedWell()) return false;
+            if (_currentTest != null && !_currentTest.ResearchedWell()) return true;
 
             return _effTests.Any(e => !e.ResearchedWell());
         }
@@ -32,7 +32,7 @@ namespace CnsService.EffReasearch
         {
             if (_effTests == null || _effTests.Count == 0) return;
 
-            if (_currentTest == null)
+            if (_currentTest == null || _currentTest.ResearchedWell())
                 _currentTest = _effTests.FirstOrDefault(e => !e.ResearchedWell());
 
             if (_currentTest == null) return;

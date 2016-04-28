@@ -1,4 +1,5 @@
 ﻿using System;
+using Entities;
 
 namespace CnsService.Predictors
 {
@@ -24,6 +25,14 @@ namespace CnsService.Predictors
                 };
             }
             return _predictedValue.Value;
+        }
+
+        public void AddEffectorToWatch(DbEffector eff)
+        {
+        }
+
+        public void Refine()
+        {
         }
     }
 }

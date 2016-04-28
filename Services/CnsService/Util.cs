@@ -8,9 +8,9 @@ namespace CnsService
 {
     public static class Util
     {
-        public static bool CompareDouble(double a, double b, double tolerance)
+        public static bool DoubleDiffer(double a, double b, double tolerance)
         {
-            return Math.Abs(a - b) <= tolerance;
+            return Math.Abs(a - b) > tolerance;
         }
     }
 }

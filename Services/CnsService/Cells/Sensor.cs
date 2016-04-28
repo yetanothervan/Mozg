@@ -17,7 +17,7 @@ namespace CnsService.Cells
         private readonly ISensor _physical;
         private IPredictor _predictor;
         private PredictedValue _predictedValue;
-        private IDbCnsOut _dbCnsOut;
+        private readonly IDbCnsOut _dbCnsOut;
         private readonly double _tolerance;
 
         public Sensor(ISensor sensor, int id, IDbCnsOut dbCnsOut, double tolerance)
@@ -56,7 +56,21 @@ namespace CnsService.Cells
             if (_predictedValue == null || _predictedValue.TimeMoment + 1 != _dbCnsOut.CurrentTimeMoment)
                 throw new Exception("not correct sequence");
 
-            return Util.CompareDouble(_physical.Value, _predictedValue.Value, _tolerance);
+            return !Util.DoubleDiffer(_physical.Value, _predictedValue.Value, _tolerance);
+        }
+
+        public void RefinePrediction()
+        {
+            if (_predictor is ConstantPredictor)
+            {
+                var effs = _dbCnsOut.GetEffectorsThatChangedLastMoment();
+                if (effs.Count != 1)
+                    throw new NotImplementedException();
+                _predictor = new FirstGradePredictor(this, _dbCnsOut);
+                _predictor.AddEffectorToWatch(effs.First());
+            }
+
+            _predictor.Refine();
         }
     }
 }

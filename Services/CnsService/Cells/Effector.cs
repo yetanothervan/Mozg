@@ -46,6 +46,11 @@ namespace CnsService.Cells
             return _physical.Value;
         }
 
+        public double GetNextValue()
+        {
+            return _physical.NextValue;
+        }
+
         public void SetNextValue(double value)
         {
             _physical.NextValue = value;

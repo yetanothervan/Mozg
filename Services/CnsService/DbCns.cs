@@ -113,9 +113,7 @@ namespace CnsService
 
             var badPredictors = GetPoorPredictors();
             foreach (var bp in badPredictors)
-            {
-                //todo - here
-            }
+                bp.RefinePrediction();
         }
         
         public List<Effector> GetEffectors()
@@ -145,6 +143,44 @@ namespace CnsService
         public int CurrentTimeMoment
         {
             get { return _cnsState.TimeMoment; }
+        }
+
+        public List<DbEffector> GetEffectorsThatChangedLastMoment()
+        {
+            var effIds = _context.DbEffectors.ToList();
+            
+            var last =
+                _context.CellEntries.Where(
+                    e => effIds.Select(id => id.Id).Contains(e.CellId) && e.TimeMoment == _timeMomentSaved);
+            var prelast =
+                _context.CellEntries.Where(
+                    e => effIds.Select(id => id.Id).Contains(e.CellId) && e.TimeMoment == _timeMomentSaved - 1);
+            
+            if (!last.Any() || !prelast.Any())
+                return null;
+
+            var res = last.Join(prelast,
+                l => l.CellId, pl => pl.CellId,
+                (l, pl) => new {l.CellId, LastValue = l.Value, PrelastValue = pl.Value})
+                .Where(e =>
+                        Util.DoubleDiffer(e.LastValue, e.PrelastValue, effIds.First(eff => eff.Id == e.CellId).Tolerance))
+                .ToList();
+
+            return effIds.Where(e => res.Select(r => r.CellId).Contains(e.Id)).ToList();
+        }
+
+        public List<double> GetValuesForCellLast(int id, int depth)
+        {
+            return
+                _context.CellEntries.Where(c => c.CellId == id && c.TimeMoment > _timeMomentSaved - depth)
+                    .OrderByDescending(c => c.TimeMoment)
+                    .Select(c => c.Value)
+                    .ToList();
+        }
+
+        public double GetEffectorNextValue(int id)
+        {
+            return _effectors.First(e => e.DbId == id).GetNextValue();
         }
 
         private List<Sensor> GetPoorPredictors()
