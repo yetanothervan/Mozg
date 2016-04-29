@@ -145,29 +145,18 @@ namespace CnsService
             get { return _cnsState.TimeMoment; }
         }
 
-        public List<DbEffector> GetEffectorsThatChangedLastMoment()
+        public List<Cell> GetEffectorsThatChangedLastMoment()
         {
-            var effIds = _context.DbEffectors.ToList();
-            
-            var last =
-                _context.CellEntries.Where(
-                    e => effIds.Select(id => id.Id).Contains(e.CellId) && e.TimeMoment == _timeMomentSaved);
-            var prelast =
-                _context.CellEntries.Where(
-                    e => effIds.Select(id => id.Id).Contains(e.CellId) && e.TimeMoment == _timeMomentSaved - 1);
-            
-            if (!last.Any() || !prelast.Any())
-                return null;
-
-            var res = last.Join(prelast,
-                l => l.CellId, pl => pl.CellId,
-                (l, pl) => new {l.CellId, LastValue = l.Value, PrelastValue = pl.Value})
-                .Where(e =>
-                        Util.DoubleDiffer(e.LastValue, e.PrelastValue, effIds.First(eff => eff.Id == e.CellId).Tolerance))
-                .ToList();
-
-            return effIds.Where(e => res.Select(r => r.CellId).Contains(e.Id)).ToList();
+            var effIds = _context.DbEffectors.Select(c => new Cell(){Id = c.Id, Tolerance = c.Tolerance}).ToList();
+            return CellsThatChangedLastMoment(effIds);
         }
+
+        public List<Cell> GetSensorThatChangedLastMoment()
+        {
+            var sensIds = _context.DbSensors.Select(c => new Cell() { Id = c.Id, Tolerance = c.Tolerance }).ToList();
+            return CellsThatChangedLastMoment(sensIds);
+        }
+        
 
         public List<double> GetValuesForCellLast(int id, int depth)
         {
@@ -182,7 +171,7 @@ namespace CnsService
         {
             return _effectors.First(e => e.DbId == id).GetNextValue();
         }
-
+        
         private List<Sensor> GetPoorPredictors()
         {
             var result = new List<Sensor>();
@@ -196,6 +185,28 @@ namespace CnsService
             result.AddRange(_sensors.Where(s => !s.PredictedWell()));
             result.AddRange(_targetSensors.Where(s=>!s.PredictedWell()));
             return result;
+        }
+
+        private List<Cell> CellsThatChangedLastMoment(IEnumerable<Cell> cells)
+        {
+            var last =
+                _context.CellEntries.Where(
+                    e => cells.Select(id => id.Id).Contains(e.CellId) && e.TimeMoment == _timeMomentSaved);
+            var prelast =
+                _context.CellEntries.Where(
+                    e => cells.Select(id => id.Id).Contains(e.CellId) && e.TimeMoment == _timeMomentSaved - 1);
+
+            if (!last.Any() || !prelast.Any())
+                return null;
+
+            var res = last.Join(prelast,
+                l => l.CellId, pl => pl.CellId,
+                (l, pl) => new { l.CellId, LastValue = l.Value, PrelastValue = pl.Value })
+                .Where(e =>
+                    Util.DoubleDiffer(e.LastValue, e.PrelastValue, cells.First(eff => eff.Id == e.CellId).Tolerance))
+                .ToList();
+
+            return cells.Where(e => res.Select(r => r.CellId).Contains(e.Id)).ToList();
         }
     }
 }

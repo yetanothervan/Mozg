@@ -27,7 +27,7 @@ namespace CnsService.Predictors
             return _predictedValue.Value;
         }
 
-        public void AddEffectorToWatch(DbEffector eff)
+        public void AddEffectorToWatch(int eff)
         {
         }
 
