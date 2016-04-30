@@ -7,8 +7,9 @@ namespace CnsService
     public interface IDbCnsOut
     {
         int CurrentTimeMoment { get; }
-        List<DbEffector> GetEffectorsThatChangedLastMoment();
+        List<Cell> GetEffectorsThatChangedLastMoment();
         List<double> GetValuesForCellLast(int id, int depth);
         double GetEffectorNextValue(int id);
+        List<Cell> GetSensorThatChangedLastMoment();
     }
 }

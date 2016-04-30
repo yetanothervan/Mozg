@@ -10,14 +10,14 @@ namespace CnsService.Predictors
     {
         private readonly Sensor _sensor;
         private readonly IDbCnsOut _db;
-        private readonly List<DbEffector> _effectors;
+        private readonly List<int> _effectors;
         private List<double> _coeffs;
 
         public FirstGradePredictor(Sensor sensor, IDbCnsOut db)
         {
             _sensor = sensor;
             _db = db;
-            _effectors = new List<DbEffector>();
+            _effectors = new List<int>();
             _coeffs = new List<double>();
         }
 
@@ -36,16 +36,17 @@ namespace CnsService.Predictors
                     comp *= 
                         var == 0 
                         ? _sensor.GetValue() 
-                        : _db.GetEffectorNextValue(_effectors[var - 1].Id);
+                        : _db.GetEffectorNextValue(_effectors[var - 1]);
                 
                 res += _coeffs[i]*comp;
             }
             return res;
         }
 
-        public void AddEffectorToWatch(DbEffector eff)
+        public void AddEffectorToWatch(int id)
         {
-            _effectors.Add(eff);
+            if (!_effectors.Contains(id))
+                _effectors.Add(id);
         }
 
         public void Refine()
@@ -57,6 +58,7 @@ namespace CnsService.Predictors
         {
             var ec = _effectors.Count; //effectors count
             var variants = (int) Math.Pow(2, _effectors.Count + 1) - 1; //variants count
+            
             var mvs = Matrix<double>.Build.Dense(variants, ec + 2);
 
             //fill main values
@@ -75,18 +77,24 @@ namespace CnsService.Predictors
             //effs component
             for (var i = 0; i < ec; ++i)
             {
-                var evals = _db.GetValuesForCellLast(_effectors[i].Id, variants);
+                var evals = _db.GetValuesForCellLast(_effectors[i], variants);
                 for (var j = 0; j < variants; ++j)
                     mvs[j, 1 + i] = evals[j];
             }
 
+            _coeffs = CalculateCoeffs(mvs, ec);
+        }
+
+        public static List<double> CalculateCoeffs(Matrix<double> mvs, int ec)
+        {
+            var variants = mvs.RowCount;
             //fill extended values
             var evs = Matrix<double>.Build.Dense(variants, variants + 1);
             //fill res sens
             for (int i = 0; i < variants; ++i)
                 evs[i, variants] = mvs[i, ec + 1];
             //others
-            for (int i = 0; i < variants; ++i)  //evs rows
+            for (int i = 0; i < variants; ++i) //evs rows
             {
                 for (int j = 0; j < variants; ++j) //evs cols
                 {
@@ -104,18 +112,19 @@ namespace CnsService.Predictors
             var md = evs.RemoveColumn(variants);
             var dmd = md.Determinant();
             var srcol = evs.Column(variants);
-            _coeffs = new List<double>();
+            var coeffs = new List<double>();
             for (int i = 0; i < variants; ++i)
             {
                 var m = Matrix<double>.Build.Dense(variants, variants);
                 md.CopyTo(m);
                 m.SetColumn(i, srcol);
                 var dm = m.Determinant();
-                _coeffs.Add(dm / dmd);
+                coeffs.Add(dm / dmd);
             }
+            return coeffs;
         }
 
-        private List<int> GetVariant(int var)
+        public static List<int> GetVariant(int var)
         {
             var res = new List<int>();
             for(int pos = 0; pos < 32; ++pos)

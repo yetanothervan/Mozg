@@ -67,8 +67,12 @@ namespace CnsService.Cells
                 if (effs.Count != 1)
                     throw new NotImplementedException();
                 _predictor = new FirstGradePredictor(this, _dbCnsOut);
-                _predictor.AddEffectorToWatch(effs.First());
+                _predictor.AddEffectorToWatch(effs.First().Id);
             }
+
+            var effs2 = _dbCnsOut.GetEffectorsThatChangedLastMoment();
+            if (effs2.Count == 1) _predictor.AddEffectorToWatch(effs2.First().Id);
+            var sens2 = _dbCnsOut.GetSensorThatChangedLastMoment();
 
             _predictor.Refine();
         }
