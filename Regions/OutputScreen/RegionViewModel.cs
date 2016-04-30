@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -14,14 +15,26 @@ namespace OutputScreen
         private double _width;
         private double _height;
         private Thickness _frontLeftMargin;
-        private ILeg _leg;
+        private List<ILeg> _legs;
         private string _frontLeftHorAngle;
+        private Thickness _frontRightMargin;
+        private Thickness _backLeftMargin;
+        private Thickness _backRightMargin;
 
         public RegionViewModel(IWorldService worldService)
         {
             _worldService = worldService;
             var bug = _worldService.GetFirstCreature() as IFourLeg;
-            if (bug != null) _leg = bug.GetFrontLeftLeg();
+
+            _legs = new List<ILeg>();
+
+            if (bug != null)
+            {
+                _legs.Add(bug.GetFrontLeftLeg());
+                _legs.Add(bug.GetFrontRightLeg());
+                _legs.Add(bug.GetBackLeftLeg());
+                _legs.Add(bug.GetBackRightLeg());
+            }
 
             this.PropertyChanged += (sender, args) =>
             {
@@ -38,15 +51,25 @@ namespace OutputScreen
 
         private void UpdateRegion()
         {
-            if (_leg != null)
+            if (_legs != null)
             {
-                var horStep = Width/2/(_leg.MaxAngle - _leg.MinAngle);
-                var verStep = Height/2/(_leg.MaxAngle - _leg.MinAngle);
+                FrontLeftHorAngle = _legs[0].HorAngle.ToString("F3");
 
-                FrontLeftMargin = new Thickness(horStep*(_leg.HorAngle - _leg.MinAngle), verStep*(_leg.VerAngle - _leg.MinAngle),
-                    0, 0);
-                FrontLeftHorAngle = _leg.HorAngle.ToString("F3");
+                FrontLeftMargin = CalcThick(_legs[0]);
+                FrontRightMargin = CalcThick(_legs[1]);
+                BackLeftMargin = CalcThick(_legs[2]);
+                BackRightMargin = CalcThick(_legs[3]);
             }
+        }
+
+        private Thickness CalcThick(ILeg leg)
+        {
+            var horStep = Width / 2 / (leg.MaxAngle - leg.MinAngle);
+            var verStep = Height / 2 / (leg.MaxAngle - leg.MinAngle);
+            var marg = new Thickness(horStep * (leg.HorAngle - leg.MinAngle),
+                verStep * (leg.VerAngle - leg.MinAngle),
+                0, 0);
+            return marg;
         }
 
         public string FrontLeftHorAngle
@@ -67,6 +90,39 @@ namespace OutputScreen
             {
                 if (value == _frontLeftMargin) return;
                 _frontLeftMargin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Thickness FrontRightMargin
+        {
+            get { return _frontRightMargin; }
+            set
+            {
+                if (value.Equals(_frontRightMargin)) return;
+                _frontRightMargin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Thickness BackLeftMargin
+        {
+            get { return _backLeftMargin; }
+            set
+            {
+                if (value.Equals(_backLeftMargin)) return;
+                _backLeftMargin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Thickness BackRightMargin
+        {
+            get { return _backRightMargin; }
+            set
+            {
+                if (value.Equals(_backRightMargin)) return;
+                _backRightMargin = value;
                 OnPropertyChanged();
             }
         }

@@ -153,5 +153,20 @@ namespace WorldService.Bug
         {
             return _legs[LeftFront];
         }
+
+        public ILeg GetBackLeftLeg()
+        {
+            return _legs[LeftBack];
+        }
+
+        public ILeg GetFrontRightLeg()
+        {
+            return _legs[RightFront];
+        }
+
+        public ILeg GetBackRightLeg()
+        {
+            return _legs[RightBack];
+        }
     }
 }
