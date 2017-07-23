@@ -1,4 +1,5 @@
 ﻿using Interfaces;
+using OutputScreen.OutputView;
 using Prism.Modularity;
 using Prism.Regions;
 
@@ -15,7 +16,7 @@ namespace OutputScreen.ModuleDefinition
 
         public void Initialize()
         {
-            _regionViewRegistry.RegisterViewWithRegion(RegionNames.OutputScreenRegion, typeof(RegionView));
+            _regionViewRegistry.RegisterViewWithRegion(RegionNames.OutputScreenRegion, typeof(OutputView.OutputView));
             _regionViewRegistry.RegisterViewWithRegion(RegionNames.DiagnosticsRegion, typeof(DiagnosticsView.DiagnosticsView));
         }
     }

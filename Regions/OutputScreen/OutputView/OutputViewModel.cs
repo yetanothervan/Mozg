@@ -7,9 +7,9 @@ using Interfaces;
 using OutputScreen.Annotations;
 using Prism.Commands;
 
-namespace OutputScreen
+namespace OutputScreen.OutputView
 {
-    public class RegionViewModel : INotifyPropertyChanged
+    public class OutputViewModel : INotifyPropertyChanged
     {
         private readonly IWorldService _worldService;
         private double _width;
@@ -21,7 +21,7 @@ namespace OutputScreen
         private Thickness _backLeftMargin;
         private Thickness _backRightMargin;
 
-        public RegionViewModel(IWorldService worldService)
+        public OutputViewModel(IWorldService worldService)
         {
             _worldService = worldService;
             var bug = _worldService.GetFirstCreature() as IFourLeg;

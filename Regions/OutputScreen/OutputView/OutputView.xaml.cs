@@ -1,13 +1,13 @@
 ﻿using System.Windows.Controls;
 
-namespace OutputScreen
+namespace OutputScreen.OutputView
 {
     /// <summary>
     /// Логика взаимодействия для RegionView.xaml
     /// </summary>
-    public partial class RegionView : UserControl
+    public partial class OutputView : UserControl
     {
-        public RegionView(RegionViewModel model)
+        public OutputView(OutputViewModel model)
         {
             InitializeComponent();
             DataContext = model;

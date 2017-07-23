@@ -64,10 +64,10 @@
     <Compile Include="ModuleDefinition\OutputScreenModule.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegionView.xaml.cs">
-      <DependentUpon>RegionView.xaml</DependentUpon>
+    <Compile Include="OutputView\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RegionViewModel.cs" />
+    <Compile Include="OutputView\OutputViewModel.cs" />
     <Compile Include="SizeObserver.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +79,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RegionView.xaml">
+    <Page Include="OutputView\OutputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
